@@ -1,7 +1,8 @@
-package com.example.newsapiapp;
+package com.example.newsapiapp.core;
 
 import android.content.Context;
 
+import com.example.newsapiapp.R;
 import com.example.newsapiapp.model.Article;
 import com.example.newsapiapp.model.Response;
 import com.google.gson.Gson;
