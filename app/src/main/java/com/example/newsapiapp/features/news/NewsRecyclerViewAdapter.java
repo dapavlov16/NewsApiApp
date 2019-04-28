@@ -1,18 +1,23 @@
 package com.example.newsapiapp.features.news;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.newsapiapp.R;
 import com.example.newsapiapp.model.Article;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.newsapiapp.core.NewsApiApplication.INSTANCE;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.NewsViewHolder>{
 
@@ -32,6 +37,9 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         holder.tvLabel.setText(data.get(position).getTitle());
+        Glide.with(INSTANCE)
+                .load(data.get(position).getUrlToImage())
+                .into(holder.ivLogo);
     }
 
     @Override
@@ -42,10 +50,12 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvLabel;
+        private ImageView ivLogo;
 
         NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             tvLabel = itemView.findViewById(R.id.tv_label);
+            ivLogo = itemView.findViewById(R.id.iv_logo);
         }
     }
 }
