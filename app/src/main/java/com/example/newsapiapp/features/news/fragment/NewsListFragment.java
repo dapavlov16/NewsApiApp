@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newsapiapp.R;
 import com.example.newsapiapp.core.BaseFragment;
+import com.example.newsapiapp.core.SimpleDisposable;
+import com.example.newsapiapp.features.news.NewsRecyclerViewAdapter;
+import com.example.newsapiapp.features.news.viewmodel.NewsListViewModel;
 import com.example.newsapiapp.model.Article;
 
 import java.util.List;
-
-import io.reactivex.observers.DisposableObserver;
 
 public class NewsListFragment extends BaseFragment {
 
@@ -55,20 +56,17 @@ public class NewsListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         addDisposables(
-                viewModel.getNewsObservable().subscribeWith(new DisposableObserver<List<Article>>() {
+                viewModel.getNewsObservable().subscribeWith(new SimpleDisposable<List<Article>>() {
                     @Override
                     public void onNext(List<Article> articles) {
                         adapter.setData(articles);
                         adapter.notifyDataSetChanged();
                     }
-
+                }),
+                adapter.getClickNewsObservable().subscribeWith(new SimpleDisposable<Integer>() {
                     @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
+                    public void onNext(Integer integer) {
+                        viewModel.openDetails(integer);
                     }
                 })
         );

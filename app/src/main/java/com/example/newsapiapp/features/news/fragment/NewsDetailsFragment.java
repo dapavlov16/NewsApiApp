@@ -11,11 +11,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.newsapiapp.R;
 import com.example.newsapiapp.core.BaseFragment;
+import com.example.newsapiapp.core.SimpleDisposable;
 import com.example.newsapiapp.features.Screens;
 import com.example.newsapiapp.features.news.viewmodel.NewsDetailsViewModel;
 import com.example.newsapiapp.model.Article;
 
-import io.reactivex.observers.DisposableObserver;
+public class NewsDetailsFragment extends BaseFragment {
 
     private NewsDetailsViewModel viewModel;
     private int position;
@@ -35,6 +36,14 @@ import io.reactivex.observers.DisposableObserver;
         position = getArguments().getInt(Screens.ARTICLE_POSITION);
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_news_details, container, false);
+        // TODO fvbi
+        return view;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -46,13 +55,6 @@ import io.reactivex.observers.DisposableObserver;
         super.onResume();
         addDisposables(
                 viewModel.getDetailsObservable()
-                .subscribeWith(new DisposableObserver<Article>(){
-
-                    @Override
-                    public void onNext(Article article) {
-                        // todo init UI
-                    }
-
                         .subscribeWith(new SimpleDisposable<Article>() {
                             @Override
                             public void onNext(Article article) {
