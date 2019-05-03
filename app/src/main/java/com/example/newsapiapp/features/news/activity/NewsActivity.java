@@ -1,4 +1,4 @@
-package com.example.newsapiapp.features.news;
+package com.example.newsapiapp.features.news.activity;
 
 import android.os.Bundle;
 

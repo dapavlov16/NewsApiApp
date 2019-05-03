@@ -19,8 +19,8 @@ public abstract class BaseViewModel extends AndroidViewModel {
         router = NewsApiApplication.INSTANCE.getRouter();
     }
 
-    protected void addDisposables(Disposable... disposables){
-        for (Disposable d: disposables) {
+    protected void addDisposables(Disposable... disposables) {
+        for (Disposable d : disposables) {
             compositeDisposable.add(d);
         }
     }

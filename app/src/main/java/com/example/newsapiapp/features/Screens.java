@@ -2,8 +2,8 @@ package com.example.newsapiapp.features;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.newsapiapp.features.details.DetailsFragment;
-import com.example.newsapiapp.features.news.NewsListFragment;
+import com.example.newsapiapp.features.news.fragment.NewsDetailsFragment;
+import com.example.newsapiapp.features.news.fragment.NewsListFragment;
 
 import ru.terrakok.cicerone.android.support.SupportAppScreen;
 
@@ -29,7 +29,7 @@ public class Screens {
 
         @Override
         public Fragment getFragment() {
-            return DetailsFragment.newInstance(position);
+            return NewsDetailsFragment.newInstance(position);
         }
     }
 }

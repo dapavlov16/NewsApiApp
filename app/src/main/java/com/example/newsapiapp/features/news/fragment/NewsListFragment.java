@@ -1,4 +1,4 @@
-package com.example.newsapiapp.features.news;
+package com.example.newsapiapp.features.news.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -69,7 +69,6 @@ public class NewsListFragment extends BaseFragment {
 
                     @Override
                     public void onComplete() {
-
                     }
                 })
         );

@@ -1,4 +1,4 @@
-package com.example.newsapiapp.features.details;
+package com.example.newsapiapp.features.news.viewmodel;
 
 import android.app.Application;
 
@@ -12,7 +12,7 @@ import com.example.newsapiapp.model.Article;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
-public class DetailsViewModel extends BaseViewModel {
+public class NewsDetailsViewModel extends BaseViewModel {
 
     private Repository repository;
     private BehaviorSubject<Article> detailsSubject = BehaviorSubject.create();
@@ -21,9 +21,9 @@ public class DetailsViewModel extends BaseViewModel {
         return detailsSubject.hide();
     }
 
-    public DetailsViewModel(@NonNull Application application) {
+    public NewsDetailsViewModel(@NonNull Application application) {
         super(application);
-        repository = ((NewsApiApplication)application).getRepository();
+        repository = ((NewsApiApplication) application).getRepository();
     }
 
     public void load(int position) {

@@ -1,4 +1,4 @@
-package com.example.newsapiapp.features.news;
+package com.example.newsapiapp.features.news.viewmodel;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.newsapiapp.core.BaseViewModel;
 import com.example.newsapiapp.core.NewsApiApplication;
 import com.example.newsapiapp.core.Repository;
+import com.example.newsapiapp.features.Screens;
 import com.example.newsapiapp.model.Article;
 
 import java.util.List;
@@ -25,10 +26,14 @@ public class NewsListViewModel extends BaseViewModel {
 
     public NewsListViewModel(@NonNull Application application) {
         super(application);
-        repository = ((NewsApiApplication)application).getRepository();
+        repository = ((NewsApiApplication) application).getRepository();
     }
 
     public void loadNews() {
         newsSubject.onNext(repository.getArticles());
+    }
+
+    public void openDetails(Integer i) {
+        router.navigateTo(new Screens.DetailsListScreen(i));
     }
 }

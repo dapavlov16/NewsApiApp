@@ -1,25 +1,27 @@
-package com.example.newsapiapp.features.details;
+package com.example.newsapiapp.features.news.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.newsapiapp.R;
 import com.example.newsapiapp.core.BaseFragment;
 import com.example.newsapiapp.features.Screens;
+import com.example.newsapiapp.features.news.viewmodel.NewsDetailsViewModel;
 import com.example.newsapiapp.model.Article;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class DetailsFragment extends BaseFragment {
-
-    private DetailsViewModel viewModel;
+    private NewsDetailsViewModel viewModel;
     private int position;
 
-    public static DetailsFragment newInstance(int position) {
-        DetailsFragment fragment = new DetailsFragment();
+    public static NewsDetailsFragment newInstance(int position) {
+        NewsDetailsFragment fragment = new NewsDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(Screens.ARTICLE_POSITION, position);
         fragment.setArguments(args);
@@ -29,7 +31,7 @@ public class DetailsFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(NewsDetailsViewModel.class);
         position = getArguments().getInt(Screens.ARTICLE_POSITION);
     }
 
@@ -51,16 +53,12 @@ public class DetailsFragment extends BaseFragment {
                         // todo init UI
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                })
+                        .subscribeWith(new SimpleDisposable<Article>() {
+                            @Override
+                            public void onNext(Article article) {
+                                // TODO init UI
+                            }
+                        })
         );
     }
 }
