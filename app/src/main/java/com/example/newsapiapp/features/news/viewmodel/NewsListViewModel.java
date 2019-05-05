@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.newsapiapp.core.BaseViewModel;
 import com.example.newsapiapp.core.NewsApiApplication;
 import com.example.newsapiapp.core.Repository;
+import com.example.newsapiapp.core.SimpleDisposable;
 import com.example.newsapiapp.features.Screens;
 import com.example.newsapiapp.model.Article;
 
@@ -30,7 +31,17 @@ public class NewsListViewModel extends BaseViewModel {
     }
 
     public void loadNews() {
-        newsSubject.onNext(repository.getArticles());
+        repository.executeGetRequest();
+        addDisposables(
+                repository
+                        .getRepositoryObservable()
+                        .subscribeWith(new SimpleDisposable<List<Article>>() {
+                            @Override
+                            public void onNext(List<Article> articles) {
+                                newsSubject.onNext(articles);
+                            }
+                        })
+        );
     }
 
     public void openDetails(Integer i) {

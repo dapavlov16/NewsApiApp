@@ -2,8 +2,12 @@ package com.example.newsapiapp.core;
 
 import android.app.Application;
 
+import com.example.newsapiapp.network.NewsApi;
 import com.google.gson.Gson;
 
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
@@ -13,14 +17,25 @@ public class NewsApiApplication extends Application {
     public static NewsApiApplication INSTANCE;
     private Repository repository;
     private Cicerone<Router> cicerone;
+    private NewsApi api;
 
     @Override
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
 
+        initApi();
         initCicerone();
         initRepository();
+    }
+
+    private void initApi() {
+        api = new Retrofit.Builder()
+                .baseUrl("https://newsapi.org/v2/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(NewsApi.class);
     }
 
     private void initCicerone() {
@@ -28,7 +43,7 @@ public class NewsApiApplication extends Application {
     }
 
     private void initRepository() {
-        repository = new Repository(this, new Gson());
+        repository = new Repository(this, new Gson(), api);
     }
 
     public NavigatorHolder getNavigatorHolder() {
