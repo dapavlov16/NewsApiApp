@@ -66,7 +66,7 @@ public class Repository {
         Log.e("WOW", "executeGetRequest: ");
         if (articles == null) {
             Map<String, String> map = new HashMap<>();
-            map.put("country", "us");
+            map.put("country", context.getString(R.string.country));
             map.put("apiKey", context.getString(R.string.api_key));
             api.topHeadlines(map)
                     .subscribeOn(Schedulers.io())
