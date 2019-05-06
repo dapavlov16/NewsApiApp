@@ -24,9 +24,9 @@ import io.reactivex.subjects.PublishSubject;
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.NewsViewHolder> {
 
     private List<Article> data = new ArrayList<>();
-    private PublishSubject<Integer> clickNewsSubject = PublishSubject.create();
+    private PublishSubject<String> clickNewsSubject = PublishSubject.create();
 
-    public Observable<Integer> getClickNewsObservable() {
+    public Observable<String> getClickNewsObservable() {
         return clickNewsSubject.hide();
     }
 
@@ -39,7 +39,9 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final NewsViewHolder newsViewHolder = new NewsViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_news, parent, false));
-        newsViewHolder.clContainer.setOnClickListener(v -> clickNewsSubject.onNext(newsViewHolder.getAdapterPosition()));
+        newsViewHolder.clContainer.setOnClickListener(v -> clickNewsSubject.onNext(
+                data.get(newsViewHolder.getAdapterPosition()).getUrl())
+        );
         return newsViewHolder;
     }
 

@@ -8,13 +8,13 @@ import com.example.newsapiapp.core.BaseViewModel;
 import com.example.newsapiapp.core.NewsApiApplication;
 import com.example.newsapiapp.core.Repository;
 import com.example.newsapiapp.core.SimpleDisposable;
-import com.example.newsapiapp.features.Screens;
 import com.example.newsapiapp.model.Article;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+
 
 public class NewsListViewModel extends BaseViewModel {
 
@@ -42,9 +42,5 @@ public class NewsListViewModel extends BaseViewModel {
                             }
                         })
         );
-    }
-
-    public void openDetails(Integer i) {
-        router.navigateTo(new Screens.DetailsListScreen(i));
     }
 }

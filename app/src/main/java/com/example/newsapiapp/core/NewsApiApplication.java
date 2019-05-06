@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
+import saschpe.android.customtabs.CustomTabsActivityLifecycleCallbacks;
 
 public class NewsApiApplication extends Application {
 
@@ -27,6 +28,7 @@ public class NewsApiApplication extends Application {
         initApi();
         initCicerone();
         initRepository();
+        registerActivityLifecycleCallbacks(new CustomTabsActivityLifecycleCallbacks());
     }
 
     private void initApi() {

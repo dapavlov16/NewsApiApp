@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,9 @@ import com.example.newsapiapp.features.news.viewmodel.NewsListViewModel;
 import com.example.newsapiapp.model.Article;
 
 import java.util.List;
+
+import saschpe.android.customtabs.CustomTabsHelper;
+import saschpe.android.customtabs.WebViewFallback;
 
 public class NewsListFragment extends BaseFragment {
 
@@ -63,10 +67,17 @@ public class NewsListFragment extends BaseFragment {
                         adapter.notifyDataSetChanged();
                     }
                 }),
-                adapter.getClickNewsObservable().subscribeWith(new SimpleDisposable<Integer>() {
+                adapter.getClickNewsObservable().subscribeWith(new SimpleDisposable<String>() {
                     @Override
-                    public void onNext(Integer integer) {
-                        viewModel.openDetails(integer);
+                    public void onNext(String url) {
+                        CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
+                                .addDefaultShareMenuItem()
+                                .setToolbarColor(getView().getResources().getColor(R.color.colorPrimary))
+                                .setShowTitle(true)
+                                .build();
+                        CustomTabsHelper.addKeepAliveExtra(getView().getContext(), customTabsIntent.intent);
+                        CustomTabsHelper.openCustomTab(getView().getContext(), customTabsIntent,
+                                Uri.parse(url), new WebViewFallback());
                     }
                 })
         );
