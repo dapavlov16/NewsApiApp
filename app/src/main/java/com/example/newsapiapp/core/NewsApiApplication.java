@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.newsapiapp.network.NewsApi;
 import com.google.gson.Gson;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -25,6 +26,7 @@ public class NewsApiApplication extends Application {
         super.onCreate();
         INSTANCE = this;
 
+        AndroidThreeTen.init(this);
         initApi();
         initCicerone();
         initRepository();

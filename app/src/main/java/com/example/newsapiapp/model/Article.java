@@ -1,6 +1,8 @@
 package com.example.newsapiapp.model;
 
+import com.example.newsapiapp.network.DateTimeAdapter;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 public class Article {
@@ -24,8 +26,8 @@ public class Article {
     @Expose
     private String urlToImage;
     @SerializedName("publishedAt")
-    @Expose
-    private String publishedAt;
+    @JsonAdapter(DateTimeAdapter.class)
+    private Long publishedAt;
     @SerializedName("content")
     @Expose
     private String content;
@@ -78,11 +80,11 @@ public class Article {
         this.urlToImage = urlToImage;
     }
 
-    public String getPublishedAt() {
+    public Long getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(String publishedAt) {
+    public void setPublishedAt(Long publishedAt) {
         this.publishedAt = publishedAt;
     }
 

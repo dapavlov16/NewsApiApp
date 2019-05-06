@@ -13,7 +13,6 @@ public class Response {
     @Expose
     private Integer totalResults;
     @SerializedName("articles")
-    @Expose
     private List<Article> articles = null;
 
     public String getStatus() {

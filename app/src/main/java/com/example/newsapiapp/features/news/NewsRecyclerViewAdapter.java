@@ -1,5 +1,7 @@
 package com.example.newsapiapp.features.news;
 
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,9 +50,19 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         holder.tvLabel.setText(data.get(position).getTitle());
-        Glide.with(holder.ivLogo)
-                .load(data.get(position).getUrlToImage())
-                .into(holder.ivLogo);
+        try {
+            holder.tvTime.setText(DateUtils.getRelativeTimeSpanString(data.get(position).getPublishedAt()));
+        } catch (Exception ignore) { }
+
+        if(data.get(position).getUrlToImage() == null) {
+            holder.ivLogo.setVisibility(View.GONE);
+        }
+        else {
+            holder.ivLogo.setVisibility(View.VISIBLE);
+            Glide.with(holder.ivLogo)
+                    .load(data.get(position).getUrlToImage())
+                    .into(holder.ivLogo);
+        }
     }
 
     @Override
@@ -61,13 +73,14 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private ConstraintLayout clContainer;
-        private TextView tvLabel;
+        private TextView tvLabel, tvTime;
         private ImageView ivLogo;
 
         NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             clContainer = itemView.findViewById(R.id.clContainer);
             tvLabel = itemView.findViewById(R.id.tv_label);
+            tvTime = itemView.findViewById(R.id.tv_time);
             ivLogo = itemView.findViewById(R.id.iv_logo);
         }
     }
