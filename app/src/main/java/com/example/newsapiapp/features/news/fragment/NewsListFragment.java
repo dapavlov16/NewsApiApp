@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,8 @@ import com.example.newsapiapp.core.SimpleDisposable;
 import com.example.newsapiapp.features.news.NewsRecyclerViewAdapter;
 import com.example.newsapiapp.features.news.viewmodel.NewsListViewModel;
 import com.example.newsapiapp.model.Article;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.List;
 
@@ -29,6 +32,7 @@ public class NewsListFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private NewsRecyclerViewAdapter adapter;
+    private SpeedDialView speedDialView;
 
     private NewsListViewModel viewModel;
 
@@ -43,6 +47,7 @@ public class NewsListFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
         recyclerView = view.findViewById(R.id.rv_news);
+        speedDialView = view.findViewById(R.id.speed_dial);
         return view;
     }
 
@@ -53,6 +58,37 @@ public class NewsListFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewsRecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_action_category, R.drawable.ic_settings_white_24dp)
+                        .setLabel(R.string.fab_label_category)
+                        .create()
+        );
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_action_country, R.drawable.ic_settings_white_24dp)
+                        .setLabel(R.string.fab_label_country)
+                        .create()
+        );
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_action_language, R.drawable.ic_settings_white_24dp)
+                        .setLabel(R.string.fab_label_language)
+                        .create()
+        );
+
+        speedDialView.setOnActionSelectedListener(speedDialActionItem -> {
+            switch (speedDialActionItem.getId()) {
+                case R.id.fab_action_category:
+                    Toast.makeText(getContext(), "category", Toast.LENGTH_SHORT).show();
+                    return false;
+                case R.id.fab_action_country:
+                    Toast.makeText(getContext(), "country", Toast.LENGTH_SHORT).show();
+                    return false;
+                case R.id.fab_action_language:
+                    Toast.makeText(getContext(), "language", Toast.LENGTH_SHORT).show();
+                    return false;
+                default:
+                    return false;
+            }
+        });
 
         viewModel.loadNews();
     }

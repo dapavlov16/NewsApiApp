@@ -1,0 +1,5 @@
+<resources>
+    <item name="fab_action_category" type="id" />
+    <item name="fab_action_country" type="id" />
+    <item name="fab_action_language" type="id" />
+</resources>
