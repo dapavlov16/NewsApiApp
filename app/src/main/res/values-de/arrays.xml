@@ -1,0 +1,29 @@
+<resources>
+    <string-array name="categories">
+        <item>Alle</item>
+        <item>Wirtschafts</item>
+        <item>Unterhaltung</item>
+        <item>Allgemeines</item>
+        <item>Gesundheit</item>
+        <item>Wissenschaft</item>
+        <item>Sport</item>
+        <item>Technologie</item>
+    </string-array>
+    <string-array name="countries_list">
+        <item>Russland</item>
+        <item>USA</item>
+        <item>Deutschland</item>
+    </string-array>
+    <!--
+    <string-array name="languages_list">
+        <item>Russian</item>
+        <item>English</item>
+        <item>Deutsch</item>
+    </string-array>
+    -->
+    <string-array name="countries">
+        <item>ru</item>
+        <item>us</item>
+        <item>de</item>
+    </string-array>
+</resources>
