@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.newsapiapp.R;
 import com.example.newsapiapp.core.BaseFragment;
 import com.example.newsapiapp.core.SimpleDisposable;
@@ -68,23 +69,26 @@ public class NewsListFragment extends BaseFragment {
                         .setLabel(R.string.fab_label_country)
                         .create()
         );
-        speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_action_language, R.drawable.ic_settings_white_24dp)
-                        .setLabel(R.string.fab_label_language)
-                        .create()
-        );
+//        speedDialView.addActionItem(
+//                new SpeedDialActionItem.Builder(R.id.fab_action_language, R.drawable.ic_settings_white_24dp)
+//                        .setLabel(R.string.fab_label_language)
+//                        .create()
+//        );
 
         speedDialView.setOnActionSelectedListener(speedDialActionItem -> {
             switch (speedDialActionItem.getId()) {
                 case R.id.fab_action_category:
                     Toast.makeText(getContext(), "category", Toast.LENGTH_SHORT).show();
+                    viewModel.buildDialog(getContext(), R.string.fab_label_category);
                     return false;
                 case R.id.fab_action_country:
                     Toast.makeText(getContext(), "country", Toast.LENGTH_SHORT).show();
+                    viewModel.buildDialog(getContext(), R.string.fab_label_country);
                     return false;
-                case R.id.fab_action_language:
-                    Toast.makeText(getContext(), "language", Toast.LENGTH_SHORT).show();
-                    return false;
+//                case R.id.fab_action_language:
+//                    Toast.makeText(getContext(), "language", Toast.LENGTH_SHORT).show();
+//                    viewModel.buildDialog(getContext(), R.string.fab_label_language);
+//                    return false;
                 default:
                     return false;
             }
@@ -115,6 +119,12 @@ public class NewsListFragment extends BaseFragment {
                         CustomTabsHelper.addKeepAliveExtra(getView().getContext(), customTabsIntent.intent);
                         CustomTabsHelper.openCustomTab(getView().getContext(), customTabsIntent,
                                 Uri.parse(url), new WebViewFallback());
+                    }
+                }),
+                viewModel.getDialogObservable().subscribeWith(new SimpleDisposable<MaterialDialog>() {
+                    @Override
+                    public void onNext(MaterialDialog materialDialog) {
+                        materialDialog.show();
                     }
                 })
         );

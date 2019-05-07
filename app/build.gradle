@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
 
     // material dialogs
-    implementation 'com.afollestad.material-dialogs:core:2.8.1'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     // speed dial
     implementation "com.leinardi.android:speed-dial:2.0.1"

@@ -2,7 +2,8 @@
     <string name="app_name">NewsApiApp</string>
     <string name="country">us</string>
     <string name="top_headlines">Top Headlines</string>
-    <string name="fab_label_category">Choose category</string>
-    <string name="fab_label_country">Choose country</string>
-    <string name="fab_label_language">Choose language</string>
+    <string name="fab_label_category">Category</string>
+    <string name="fab_label_country">Country</string>
+    <string name="fab_label_language">Language</string>
+    <string name="apply">Apply</string>
 </resources>
