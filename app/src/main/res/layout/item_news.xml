@@ -11,7 +11,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     app:cardElevation="2dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clContainer"
@@ -23,7 +23,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
+            android:minHeight="250dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
-            android:maxWidth="280dp"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -50,13 +49,15 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/tv_label"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_label"
             tools:text="3 days ago" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.example.newsapiapp.features.news;
 
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,12 +51,18 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         holder.tvLabel.setText(data.get(position).getTitle());
         try {
             holder.tvTime.setText(DateUtils.getRelativeTimeSpanString(data.get(position).getPublishedAt()));
-        } catch (Exception ignore) { }
-
-        if(data.get(position).getUrlToImage() == null) {
-            holder.ivLogo.setVisibility(View.GONE);
+        } catch (Exception ignore) {
         }
-        else {
+
+        if (data.get(position).getUrlToImage() == null) {
+            if (data.get(position).getUrl().contains("youtube")) {
+                Glide.with(holder.ivLogo)
+                        .load(holder.ivLogo.getContext().getDrawable(R.drawable.yt_logo_rgb_light))
+                        .into(holder.ivLogo);
+            } else {
+                holder.ivLogo.setVisibility(View.GONE);
+            }
+        } else {
             holder.ivLogo.setVisibility(View.VISIBLE);
             Glide.with(holder.ivLogo)
                     .load(data.get(position).getUrlToImage())
