@@ -1,7 +1,5 @@
 package com.example.newsapiapp.network;
 
-import android.util.Log;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -20,7 +18,6 @@ public class DateTimeAdapter implements JsonDeserializer<Long> {
     @Override
     public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         try {
-            Log.e("WOW", "deserialize: "+LocalDateTime.parse(json.getAsString(), dateTime));
             return LocalDateTime.parse(json.getAsString(), dateTime).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
         } catch (Exception ignore) {
             return 0L;

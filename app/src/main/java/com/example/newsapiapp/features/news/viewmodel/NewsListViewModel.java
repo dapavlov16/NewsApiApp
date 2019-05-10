@@ -11,12 +11,14 @@ import com.example.newsapiapp.R;
 import com.example.newsapiapp.core.BaseViewModel;
 import com.example.newsapiapp.core.NewsApiApplication;
 import com.example.newsapiapp.core.Repository;
-import com.example.newsapiapp.core.SimpleDisposable;
 import com.example.newsapiapp.model.Article;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
@@ -40,17 +42,25 @@ public class NewsListViewModel extends BaseViewModel {
         repository = ((NewsApiApplication) application).getRepository();
     }
 
-    public void loadNews() {
-        repository.executeGetRequest();
+    public void loadNews(String q) {
         addDisposables(
                 repository
-                        .getRepositoryObservable()
-                        .subscribeWith(new SimpleDisposable<List<Article>>() {
-                            @Override
-                            public void onNext(List<Article> articles) {
-                                newsSubject.onNext(articles);
-                            }
-                        })
+                        .executeGetRequest(q)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<List<Article>>() {
+
+                                       @Override
+                                       public void onSuccess(List<Article> articles) {
+                                           newsSubject.onNext(articles);
+                                       }
+
+                                       @Override
+                                       public void onError(Throwable e) {
+
+                                       }
+                                   }
+                        )
         );
     }
 
@@ -63,8 +73,10 @@ public class NewsListViewModel extends BaseViewModel {
                 builder
                         .items(R.array.categories)
                         .itemsCallbackSingleChoice(repository.getCurrentCategory(), (dialog, itemView, which, text) -> {
-                            repository.setCurrentCategory(which);
-                            loadNews();
+                            if (repository.getCurrentCategory() != which) {
+                                repository.setCurrentCategory(which);
+                                loadNews("");
+                            }
                             return true;
                         });
                 break;
@@ -72,8 +84,10 @@ public class NewsListViewModel extends BaseViewModel {
                 builder
                         .items(R.array.countries_list)
                         .itemsCallbackSingleChoice(repository.getCurrentCountry(), (dialog, itemView, which, text) -> {
-                            repository.setCurrentCountry(which);
-                            loadNews();
+                            if (repository.getCurrentCountry() != which) {
+                                repository.setCurrentCountry(which);
+                                loadNews("");
+                            }
                             return true;
                         });
                 break;

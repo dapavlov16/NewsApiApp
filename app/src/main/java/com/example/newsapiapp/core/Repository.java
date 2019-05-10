@@ -18,9 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Single;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class Repository {
@@ -64,31 +62,19 @@ public class Repository {
         return outputStream.toString();
     }
 
-    public void executeGetRequest() {
+    public Single<List<Article>> executeGetRequest(String s) {
         Log.e("WOW", "executeGetRequest: ");
         Map<String, String> map = new HashMap<>();
         if (currentCategory != 0) {
             map.put("category", categories.get(currentCategory));
         }
+        if (!s.isEmpty()) {
+            map.put("q", s);
+        }
         map.put("country", countries.get(currentCountry));
         map.put("apiKey", context.getString(R.string.api_key));
-        api.topHeadlines(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<Response>() {
-
-                    @Override
-                    public void onSuccess(Response response) {
-                        Log.e("WOW", "onSuccess: " + response.getStatus());
-                        articles = response.getArticles();
-                        repositorySubject.onNext(articles);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
+        return api.topHeadlines(map)
+                .map(Response::getArticles);
 
     }
 
