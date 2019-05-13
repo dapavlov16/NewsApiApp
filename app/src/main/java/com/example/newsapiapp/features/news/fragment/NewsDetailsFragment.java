@@ -21,21 +21,11 @@ public class NewsDetailsFragment extends BaseFragment {
 
     private TextView tvTest;
     private NewsDetailsViewModel viewModel;
-    private int position;
-
-    public static NewsDetailsFragment newInstance(int position) {
-        NewsDetailsFragment fragment = new NewsDetailsFragment();
-        Bundle args = new Bundle();
-        args.putInt(Screens.ARTICLE_POSITION, position);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(NewsDetailsViewModel.class);
-        position = getArguments().getInt(Screens.ARTICLE_POSITION);
     }
 
     @Nullable
@@ -49,20 +39,10 @@ public class NewsDetailsFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.load(position);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        addDisposables(
-                viewModel.getDetailsObservable()
-                        .subscribeWith(new SimpleDisposable<Article>() {
-                            @Override
-                            public void onNext(Article article) {
-                                tvTest.setText(article.getTitle());
-                            }
-                        })
-        );
     }
 }

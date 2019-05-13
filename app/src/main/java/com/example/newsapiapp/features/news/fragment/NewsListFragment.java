@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.newsapiapp.R;
@@ -36,11 +36,11 @@ import saschpe.android.customtabs.WebViewFallback;
 
 public class NewsListFragment extends BaseFragment {
 
+    private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
-    private NewsRecyclerViewAdapter adapter;
+    private NewsRecyclerViewAdapter rvAdapter;
     private SpeedDialView speedDialView;
     private SearchView searchView;
-
     private NewsListViewModel viewModel;
 
     @Override
@@ -53,6 +53,7 @@ public class NewsListFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
+        refreshLayout = view.findViewById(R.id.sr_layout);
         recyclerView = view.findViewById(R.id.rv_news);
         speedDialView = view.findViewById(R.id.speed_dial);
         searchView = view.findViewById(R.id.search_view);
@@ -63,9 +64,10 @@ public class NewsListFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        refreshLayout.setOnRefreshListener(() -> viewModel.loadNews(searchView.getQuery().toString()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewsRecyclerViewAdapter();
-        recyclerView.setAdapter(adapter);
+        rvAdapter = new NewsRecyclerViewAdapter();
+        recyclerView.setAdapter(rvAdapter);
         recyclerView.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -96,11 +98,9 @@ public class NewsListFragment extends BaseFragment {
         speedDialView.setOnActionSelectedListener(speedDialActionItem -> {
             switch (speedDialActionItem.getId()) {
                 case R.id.fab_action_category:
-                    Toast.makeText(getContext(), "category", Toast.LENGTH_SHORT).show();
                     viewModel.buildDialog(getContext(), R.string.fab_label_category);
                     return false;
                 case R.id.fab_action_country:
-                    Toast.makeText(getContext(), "country", Toast.LENGTH_SHORT).show();
                     viewModel.buildDialog(getContext(), R.string.fab_label_country);
                     return false;
 //                case R.id.fab_action_language:
@@ -122,11 +122,15 @@ public class NewsListFragment extends BaseFragment {
                 viewModel.getNewsObservable().subscribeWith(new SimpleDisposable<List<Article>>() {
                     @Override
                     public void onNext(List<Article> articles) {
-                        adapter.setData(articles);
-                        adapter.notifyDataSetChanged();
+                        Log.e("WOW", "onNext: "+articles);
+                        if (!articles.isEmpty()) {
+                            rvAdapter.setData(articles);
+                            rvAdapter.notifyDataSetChanged();
+                        }
+                        refreshLayout.setRefreshing(false);
                     }
                 }),
-                adapter.getClickNewsObservable().subscribeWith(new SimpleDisposable<String>() {
+                rvAdapter.getClickNewsObservable().subscribeWith(new SimpleDisposable<String>() {
                     @Override
                     public void onNext(String url) {
                         Log.e("WOW", "onNext: click");

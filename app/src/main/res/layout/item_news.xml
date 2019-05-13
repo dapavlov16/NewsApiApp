@@ -23,7 +23,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="250dp"
+            android:minHeight="220dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent" />

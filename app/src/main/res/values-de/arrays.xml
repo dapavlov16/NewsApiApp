@@ -1,9 +1,8 @@
 <resources>
     <string-array name="categories">
-        <item>Alle</item>
+        <item>Allgemeines</item>
         <item>Wirtschafts</item>
         <item>Unterhaltung</item>
-        <item>Allgemeines</item>
         <item>Gesundheit</item>
         <item>Wissenschaft</item>
         <item>Sport</item>

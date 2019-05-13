@@ -29,7 +29,7 @@ public class Screens {
 
         @Override
         public Fragment getFragment() {
-            return NewsDetailsFragment.newInstance(position);
+            return new NewsDetailsFragment();
         }
     }
 }

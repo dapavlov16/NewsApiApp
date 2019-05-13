@@ -30,7 +30,7 @@ public class Repository {
     private int currentCategory, currentCountry;
     private BehaviorSubject<List<Article>> repositorySubject = BehaviorSubject.create();
 
-    public Repository(final Context context, final Gson gson, final NewsApi api) {
+    public Repository(final Context context, final NewsApi api) {
         this.context = context;
         this.api = api;
         setDefaultIndices();
@@ -65,17 +65,15 @@ public class Repository {
     public Single<List<Article>> executeGetRequest(String s) {
         Log.e("WOW", "executeGetRequest: ");
         Map<String, String> map = new HashMap<>();
-        if (currentCategory != 0) {
-            map.put("category", categories.get(currentCategory));
-        }
+        map.put("category", categories.get(currentCategory));
+        map.put("country", countries.get(currentCountry));
+        // todo API KEY
+        map.put("apiKey", context.getString(R.string.api_key));
         if (!s.isEmpty()) {
             map.put("q", s);
         }
-        map.put("country", countries.get(currentCountry));
-        map.put("apiKey", context.getString(R.string.api_key));
         return api.topHeadlines(map)
                 .map(Response::getArticles);
-
     }
 
     private void setDefaultIndices() {

@@ -2,6 +2,7 @@ package com.example.newsapiapp.features.news.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -13,6 +14,8 @@ import com.example.newsapiapp.core.NewsApiApplication;
 import com.example.newsapiapp.core.Repository;
 import com.example.newsapiapp.model.Article;
 
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -21,6 +24,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import retrofit2.HttpException;
 
 
 public class NewsListViewModel extends BaseViewModel {
@@ -50,16 +54,24 @@ public class NewsListViewModel extends BaseViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableSingleObserver<List<Article>>() {
 
-                                       @Override
-                                       public void onSuccess(List<Article> articles) {
-                                           newsSubject.onNext(articles);
-                                       }
+                                           @Override
+                                           public void onSuccess(List<Article> articles) {
+                                               newsSubject.onNext(articles);
+                                           }
 
-                                       @Override
-                                       public void onError(Throwable e) {
-
+                                           @Override
+                                           public void onError(Throwable e) {
+                                               if (e instanceof HttpException) {
+                                                   Toast.makeText(getApplication().getApplicationContext(),
+                                                           (((HttpException) e).code() == 401) ? "API key is missing" : e.getMessage(),
+                                                           Toast.LENGTH_LONG).show();
+                                               } else if (e instanceof UnknownHostException) {
+                                                   Toast.makeText(getApplication().getApplicationContext(),
+                                                           "Connection problem", Toast.LENGTH_LONG).show();
+                                               }
+                                               newsSubject.onNext(new ArrayList<>());
+                                           }
                                        }
-                                   }
                         )
         );
     }

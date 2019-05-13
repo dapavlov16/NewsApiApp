@@ -35,6 +35,10 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         this.data = data;
     }
 
+    public void clearData() {
+        data.clear();
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

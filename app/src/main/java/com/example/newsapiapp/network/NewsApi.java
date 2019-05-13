@@ -13,4 +13,6 @@ public interface NewsApi {
     @GET("top-headlines")
     Single<Response> topHeadlines(@QueryMap Map<String, String> options);
 
+    @GET("everything")
+    Single<Response> everything(@QueryMap Map<String, String> options);
 }

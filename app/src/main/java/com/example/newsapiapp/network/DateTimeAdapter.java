@@ -18,7 +18,7 @@ public class DateTimeAdapter implements JsonDeserializer<Long> {
     @Override
     public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         try {
-            return LocalDateTime.parse(json.getAsString(), dateTime).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+            return LocalDateTime.parse(json.getAsString(), dateTime).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         } catch (Exception ignore) {
             return 0L;
         }

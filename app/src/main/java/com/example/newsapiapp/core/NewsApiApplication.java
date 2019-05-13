@@ -47,7 +47,7 @@ public class NewsApiApplication extends Application {
     }
 
     private void initRepository() {
-        repository = new Repository(this, new Gson(), api);
+        repository = new Repository(this, api);
     }
 
     public NavigatorHolder getNavigatorHolder() {
